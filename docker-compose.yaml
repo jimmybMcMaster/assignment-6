@@ -5,6 +5,11 @@ services:
       - "8080:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx_cache:/var/lib/nginx/cache
+    depends_on:
+      - server1
+      - server2
+      - server3  
 
   front-end:
     image: ghcr.io/mcmastercce/bvd-103-mcmasterful-books/mcmasterful-books-docker:main
@@ -14,9 +19,23 @@ services:
   mongo:
     image: mongo:latest
 
-  server:
+  server1:
     image: node:20
     volumes:
       - ./:/app
     working_dir: /app
     command: npx -y tsx ./index.ts
+
+  server2:
+    image: node:20
+    volumes:
+      - ./:/app
+    working_dir: /app
+    command: npx -y tsx ./index.ts
+
+  server3:
+    image: node:20
+    volumes:
+      - ./:/app
+    working_dir: /app
+    command: npx -y tsx ./index.ts  
